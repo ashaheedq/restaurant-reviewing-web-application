@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="http://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $.noConflict();
+      $('#myTable').DataTable();
+    });
+  </script>
+  <title>Reviews</title>
+  </head>
+<body>
+  {% extends "navbar.html" %}
+  {% block content %}
+
+  <h1> Reviews Table </h1>
+  <table id="myTable" class="display" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>rid</th>
+        <th>bid</th>
+        <th>uid</th>
+        <th>stars</th>
+        <th>text</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+      <tr>
+        {% for i in item %}
+          <td>{{i}}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endblock %}
+</body>
+</html>

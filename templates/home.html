@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>CS460 PA1</title>
+  </head>
+  <body>
+    {% extends "navbar.html" %}
+    {% block content %}
+
+    <h1> My First Try Using Flask </h1>
+    <p> Flask is Fun </p>
+    
+    <form method="POST" action="/">
+      <input type="text" name="bname">
+      <input type="text" name="bname">
+      <input type="text" name="bname">
+      <input type="text" name="bname">
+      <input type="text" name="bname">
+      <input type="submit" value="Add">
+    </form>
+        {% include "footer.html" %}
+
+    {% endblock %}
+
+
+  </body>
+</html>

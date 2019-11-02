@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<header>
+  <link rel="stylesheet" href="http://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <title>SQL commandline </title>
+  <style>
+    * {
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+      text-align: left;
+      font-size: large;
+
+    }
+
+    button {
+      background-color: white;
+      padding: 12px 36px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      border-bottom: 3px solid #47c9af;
+      margin-block-start: 1em;
+    }
+
+    button:hover {
+      background-color: #47c9af;
+    }
+
+    .container {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    .col-75 {
+      float: left;
+      width: 75%;
+      margin-top: 6px;
+    }
+  </style>
+
+</header>
+
+<body>
+  {% extends "navbar.html" %}
+  {% block content %}
+
+  <div class='container'>
+    <textarea type="text" id="input_A" placeholder="Write something.." style="height:200px"></textarea>
+    <button class='get_result'>Submit</button>
+    <br> <br>
+    <div class='result'>
+      <table id="myTable" class="display" cellspacing="0" width="100%">
+        <thead>
+          <tr id="tableHead"></tr>
+        </thead>
+        <tbody id="tableBody"> </tbody>
+    </div>
+  </div>
+
+
+  <script>
+    $(document).ready(function () {
+      $('.container').on('click', '.get_result', function () {
+        var val1 = $("#input_A").val();
+        $.ajax({
+          url: "/getdata",
+          type: "get",
+          data: {
+            command: val1,
+          },
+          success: function (response) {
+            var tbody = ""
+            var thead = ""
+            $.each(response.col, function () {
+              thead += "<th>" + this + "</th>";
+              $("#tableHead").html(thead);
+            });
+            $.each(response.data, function () {
+              var row = "";
+              for (var key in this) {
+                row += "<td>" + this[key] + "</td>";
+              }
+              tbody += "<tr>" + row + "</tr>";
+              $("#tableBody").html(tbody);
+            });
+          },
+        });
+      });
+      $.noConflict();
+      $('#myTable').DataTable();
+    });
+  </script>
+  {% endblock %}
+</body>
+
+</html>
