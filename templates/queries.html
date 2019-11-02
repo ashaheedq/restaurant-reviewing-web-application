@@ -11,6 +11,7 @@
       text-align: center;
     }
 
+    select,
     textarea {
       width: 100%;
       padding: 12px;
@@ -57,7 +58,18 @@
   {% block content %}
 
   <div class='container'>
-    <textarea type="text" id="input_A" placeholder="Write something.." style="height:200px"></textarea>
+    <select id="query" name="query">
+      <option value="query1">Query 1</option>
+      <option value="query2">Query 2</option>
+      <option value="query3">Query 3</option>
+      <option value="query4">Query 4</option>
+      <option value="query5">Query 5</option>
+      <option value="query6">Query 6</option>
+      <option value="query7">Query 7</option>
+      <option value="query8">Query 8</option>
+      <option value="query9">Query 9</option>
+      <option value="query10">Query 10</option>
+    </select>
     <button class='get_result'>Submit</button>
     <br> <br>
     <div class='result'>
@@ -73,7 +85,40 @@
   <script>
     $(document).ready(function () {
       $('.container').on('click', '.get_result', function () {
-        var val1 = $("#input_A").val();
+        switch ($("#query").val()) {
+          case "query1":
+            var val1 = "SELECT * FROM users WHERE review_count > 0;";
+            break;
+          case "query2":
+            var val1 = "SELECT uname FROM users WHERE review_count < 3;";
+            break;
+          case "query3":
+            var val1 = "SELECT bid FROM business WHERE active = 'false';";
+            break;
+          case "query4":
+            var val1 = "SELECT bname FROM business WHERE categories LIKE '%pizza%' AND stars >= 4;";
+            break;
+          case "query5":
+            var val1 = "SELECT count(*) FROM checkins WHERE Friday > 0;";
+            break;
+          case "query6":
+            var val1 =
+              "SELECT R.text FROM reviews R, business B WHERE R.bid = B.bid AND B.bname = 'Arcadia Tavern';";
+            break;
+          case "query7":
+            var val1 = "SELECT bname FROM reviews R, business B WHERE R.bid = B.bid AND R.stars <= 2;";
+            break;
+          case "query8":
+            var val1 = "SELECT avg(B.stars), count(review_count) FROM business B WHERE B.bname like 'kfc';";
+            break;
+          case "query9":
+            var val1 = "SELECT bid FROM business B ORDER BY B.review_count desc limit 10;";
+            break;
+          case "query10":
+            var val1 = "SELECT uname FROM users ORDER BY review_count desc limit 1;";
+            break;
+        }
+        console.log(val1)
         $.ajax({
           url: "/getdata",
           type: "get",

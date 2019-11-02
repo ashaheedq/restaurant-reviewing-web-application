@@ -66,7 +66,7 @@ def getdata():
     con = sqlite3.connect('db.db')
     cur = con.cursor()
     cur.execute(command)
-    data = cur.fetchmany(5)
+    data = cur.fetchall()
     col = [description[0] for description in cur.description]
     return jsonify({"data":data, "col":col})
 
