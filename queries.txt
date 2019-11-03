@@ -1,0 +1,10 @@
+Query1: SELECT * FROM users WHERE review_count > 0; 
+Query2: SELECT uname FROM users WHERE review_count < 3; 
+Query3: SELECT bid FROM business WHERE active = "false"; 
+Query4: SELECT bname FROM business WHERE categories LIKE "%pizza%" AND stars >= 4; 
+Query5: SELECT count(*) FROM checkins  WHERE Friday > 0; 
+Query6: SELECT R.text FROM reviews R, business B WHERE R.bid = B.bid AND B.bname = "Arcadia Tavern";
+Query7: SELECT bname FROM reviews R, business B WHERE R.bid = B.bid AND R.stars <= 2;
+Query8: SELECT avg(B.stars), count(review_count) FROM business B WHERE B.bname like "kfc";
+Query9: SELECT bid FROM business B ORDER BY B.review_count desc limit 10;
+Query10: SELECT uname FROM users ORDER BY review_count desc limit 1;
