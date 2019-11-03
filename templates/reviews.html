@@ -1,26 +1,280 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+<head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="../static/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="../static/css/editor.dataTables.min.css">
   <script src="../static/js/jquery.min.js"></script>
   <script src="../static/js/jquery.dataTables.min.js"></script>
-  <script src="../static/js/dataTables.editor.min.js"></script>
+  <style>
+  
+body {font-family: Arial, Helvetica, sans-serif;}
+
+    button {
+background-color: white;
+padding: 8px 12px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+/* font-size: 18px; */
+border-bottom: 3px solid #47c9af;
+margin-block-start: 5px;
+margin-left: 25%;
+    }
+
+    button:hover {
+      background-color: #47c9af;
+    }
+
+    button.btn-insert {
+          padding: 8px 100px;
+          font-size: 18px;
+          margin-block-end: 1em;
+          margin-left: 0%;
+          background-color: #47c9af;
+          color:#ffffff
+    }
+/* The Modal (background) */
+.modal {
+display: none; /* Hidden by default */
+position: fixed; /* Stay in place */
+z-index: 1; /* Sit on top */
+padding-top: 100px; /* Location of the box */
+left: 0;
+top: 0;
+width: 100%; /* Full width */
+height: 100%; /* Full height */
+overflow: auto; /* Enable scroll if needed */
+background-color: rgb(0,0,0); /* Fallback color */
+background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+position: relative;
+background-color: #fefefe;
+margin: auto;
+padding: 0;
+width: 50%;
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+-webkit-animation-name: animatetop;
+-webkit-animation-duration: 0.4s;
+animation-name: animatetop;
+animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+from {top:-300px; opacity:0}
+to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+from {top:-300px; opacity:0}
+to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+color: white;
+float: right;
+font-size: 28px;
+font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+color: #000;
+text-decoration: none;
+cursor: pointer;
+}
+
+.modal-header {
+padding: 2px 16px;
+background-color: #47c9af;
+color: white;
+}
+
+/* Add styles to the form container */
+.form-container {
+padding: 10px;
+background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container textarea {
+width: 100%;
+margin: 5px 0 22px 0;
+border: none;
+background: #f1f1f1;
+padding: 15px 0px 15px 0px;
+text-indent: 10px;
+}
+
+/* When the inputs get focus, do something */
+.form-container textarea:focus, .form-container input[type=text]:focus {
+background-color: #ddd;
+outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container {
+background-color: #8a8a8aa1;
+color: white;
+padding: 16px 20px;
+border: none;
+cursor: pointer;
+margin-bottom:10px;
+opacity: 0.8;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, #btn-open-modal:hover {
+opacity: 1;
+}
+
+button.btn-form {
+margin: auto;
+display: block;
+    padding: 15px 40px 15px 40px;
+    font-size: 20px;
+}
+</style>
 
   <script>
+    var editor;
+
     $(document).ready(function () {
+
       $.noConflict();
-      $('#myTable').DataTable();
+      $('#myTable').DataTable({
+      });
     });
   </script>
   <title>Reviews</title>
-  </head>
+</head>
+
 <body>
   {% extends "navbar.html" %}
   {% block content %}
 
   <h1> Reviews Table </h1>
+
+  <!-- Trigger/Open The Modal -->
+  <button class="btn-insert" id="btn-open-modal">Insert</button>
+
+  <!-- The Modal for inserting new record-->
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2 id="form-header">Create a new record</h2>
+      </div>
+      <div class="modal-body">
+        <div id="myForm">
+          <form action="{{url_for('insert_review')}}" class="form-container" id="form1" , method="POST">
+            <label for="rid"><b>Review id</b></label>
+            <input type="text" placeholder="Enter Review id" name="rid" required>
+            <label for="bid"><b>Business id</b></label>
+            <input type="text" placeholder="Enter Business id" name="bid" required>
+            <label for="uid"><b>User id</b></label>
+            <input type="text" placeholder="Enter User id" name="uid" required>
+            <label for="stars"><b>Stars</b></label>
+            <input type="text" placeholder="Enter Stars" name="stars" required>
+            <label for="text"><b>Review text</b></label>
+            <textarea type="text" placeholder="Enter Review text" name="text" required></textarea>
+
+            <button type="submit" class="btn-form" style="text-align:center;">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    
+    <script>
+     function openEditForm(elt) {
+      var key = elt.parentNode.parentNode.id;
+
+      // Get the modal
+     var modal = document.getElementById("myModal");
+
+    // Get the form
+    var form = document.getElementById("form1");
+
+    // Get form header
+    var formHeader = document.getElementById("form-header");
+
+    // Get row data
+    var row = document.getElementById(key);
+
+     // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // update form title
+    formHeader.textContent = "Edit this record";
+
+    // update fields
+        for (var i = 0; i < form.length - 1; i++) { 
+          form.elements[i].value = row.children[i].textContent;
+       }
+               modal.style.display = "block";
+
+       // When the user clicks on <span> (x), close the modal
+         span.onclick = function () {
+         modal.style.display = "none";
+         }
+
+         // When the user clicks anywhere outside of the modal, close it
+         window.onclick = function (event) {
+         if (event.target == modal) {
+         modal.style.display = "none";
+         }
+         }
+    }
+    </script>
+
+    <!-- script for insert form -->
+    <script>
+      // Get the modal
+      var modal = document.getElementById("myModal");
+
+      // Get the button that opens the modal
+      var btn = document.getElementById("btn-open-modal");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+          // Get the form
+          var form = document.getElementById("form1");
+
+          // Get form header
+          var formHeader = document.getElementById("form-header");
+          
+      // When the user clicks the button, open the modal 
+      btn.onclick = function () {
+        formHeader.textContent = "Create a new record";
+        for (var i = 0; i < form.length - 1; i++) {
+          form.elements[i].value = ""
+        }
+
+        modal.style.display = "block";
+      }
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+      }
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    </script>
+
   <table id="myTable" class="display" cellspacing="0" width="100%">
     <thead>
       <tr>
@@ -29,18 +283,28 @@
         <th>uid</th>
         <th>stars</th>
         <th>text</th>
+        <th>edit/delete</th>
       </tr>
     </thead>
     <tbody>
       {% for item in data %}
-      <tr>
+      <tr id="review{{item[0]}}">
         {% for i in item %}
-          <td>{{i}}</td>
+        <td>{{i}}</td>
         {% endfor %}
+        <td>
+            <button id="btn-edit{{item[0]}}" onclick="openEditForm(this)">Edit</button>
+            <form action="{{url_for('delete_review', id=item[0])}}" , method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn-delete">Delete</button></form>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+
+  <script>
+  </script>
+
+
   {% endblock %}
-</body>
-</html>
