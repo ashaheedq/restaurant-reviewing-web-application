@@ -1,21 +1,20 @@
-#
-# get_best_pics.py
-#
-# A simple front-end for our movie database in SQLite.
-# That will return all movies that WON BEST-PICTURE award between two years specifid by the user
-# This program only works if you put the movie database
-# (movie.sqlite) in the same folder as the program.
-#
-# Abdulshaheed Alqunber
-# asq@bu.edu
-
 import sqlite3
 
-# Connect to the database and create a cursor for it.
-con = sqlite3.connect('db.db')
-cursor = con.cursor()
-cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-print(cursor.fetchall())
+# run the sql command and return data, and col names
+def sql_command(command, param=''):
+    con = sqlite3.connect('db.db')
+    cur = con.cursor()
+    cur.execute(command, param)
+    data = cur.fetchall()
+    con.commit()
+    con.close()
+    col = [description[0] for description in cur.description]
+    return data, col
 
-db.commit()
-db.close()
+# run sql command but don't return anything
+def update_(command, param):
+    con = sqlite3.connect('db.db')
+    cur = con.cursor()
+    cur.execute(command, param)
+    con.commit()
+    con.close()
