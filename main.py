@@ -20,7 +20,6 @@ def business():
     data = cur.fetchall()
     con.commit()
     con.close()
-    # data = cur.fetchmany(20)
     active = ['no', 'active', 'no', 'no', 'no', 'no', 'no']
     return render_template("business.html", data=data, active=active)
 
@@ -51,7 +50,8 @@ def checkins():
     con = sqlite3.connect('db.db')
     cur = con.cursor()
     cur.execute("SELECT * FROM checkins;")
-    data = cur.fetchall()
+    # data = cur.fetchall()
+    data = cur.fetchmany(20)
     con.commit()
     con.close()
     active = ['no', 'no', 'no', 'no', 'active', 'no', 'no']
@@ -127,8 +127,8 @@ def delete_checkins(id):
     return redirect(url_for('checkins'))
 
 
-@app.route('/insert_review', methods=['POST'])
-def insert_review():
+@app.route('/update_reviews', methods=['POST'])
+def update_reviews():
     con = sqlite3.connect('db.db')
     cur = con.cursor()
     inputs = list(request.form.values())
@@ -154,8 +154,8 @@ def insert_review():
     return redirect(url_for('reviews'))
 
 
-@app.route('/insert_user', methods=['POST'])
-def insert_user():
+@app.route('/update_users', methods=['POST'])
+def update_users():
     con = sqlite3.connect('db.db')
     cur = con.cursor()
     command = '''INSERT INTO users VALUES (?,?,?,?)'''
@@ -166,8 +166,8 @@ def insert_user():
     return redirect(url_for('users'))
 
 
-@app.route('/insert_business', methods=['POST'])
-def insert_business():
+@app.route('/update_business', methods=['POST'])
+def update_business():
     con = sqlite3.connect('db.db')
     cur = con.cursor()
     command = '''INSERT INTO business VALUES (?,?,?,?,?,?)'''
@@ -178,8 +178,8 @@ def insert_business():
     return redirect(url_for('business'))
 
 
-@app.route('/insert_checkins', methods=['POST'])
-def insert_checkins():
+@app.route('/update_checkins', methods=['POST'])
+def update_checkins():
     con = sqlite3.connect('db.db')
     cur = con.cursor()
     command = '''INSERT INTO checkins VALUES (?,?,?,?,?,?,?,?)'''

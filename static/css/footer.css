@@ -1,7 +1,10 @@
 .foot {
-  background-color: #0D122B;
-  padding: 10px;
-  color: white;
-  text-align: center;
-  margin-block-start: 40%;
+background-color: #0D122B;
+padding: 10px;
+color: white;
+text-align: center;
+margin-top: 40%;
+padding: 10%;
+margin-block-start: 10%;
+font-size: 30px;
 }

@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>CS460 PA1</title>
-  </head>
-  <body>
-    {% extends "navbar.html" %}
-    {% block content %}
 
-    <h1> My First Try Using Flask </h1>
-    <p> Flask is Fun </p>
-    
-    <form method="POST" action="/">
-      <input type="text" name="bname">
-      <input type="text" name="bname1">
-      <input type="text" name="bname2">
-      <input type="text" name="bname3">
-      <input type="text" name="bname4">
-      <input type="submit" value="Add">
-    </form>
-        {% include "footer.html" %}
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <title>CS460 PA1</title>
+</head>
 
-    {% endblock %}
+<body>
+  {% extends "navbar.html" %}
+  {% block content %}
 
+  <div class="foot">
+    <h1>CS460 PA1</h1>
+    <h1>Abdulshaheed Alqunber, Faisal Mushayt
+    </h1>
+  </div>
 
-  </body>
-</html>
+  {% endblock %}

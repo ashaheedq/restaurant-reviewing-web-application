@@ -1,0 +1,22 @@
+<!-- template -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../static/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../static/css/interface.css">
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/jquery.dataTables.min.js"></script>
+    <script src="../static/js/src.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $.noConflict();
+            $('#myTable').DataTable({});
+        });
+    </script>
+
+    {% extends "navbar.html" %}

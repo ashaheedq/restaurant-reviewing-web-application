@@ -1,27 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="../static/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="../static/css/editor.dataTables.min.css">
-  <script src="../static/js/jquery.min.js"></script>
-  <script src="../static/js/jquery.dataTables.min.js"></script>
-  <script src="../static/js/dataTables.buttons.min.js"></script>
-  <script src="../static/js/dataTables.select.min.js"></script>
-  <script src="../static/js/dataTables.editor.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      $.noConflict();
-      $('#myTable').DataTable();
-    });
-  </script>
-  <title>Checkins</title>
-  </head>
+
+<head>
+  <title>Check-ins</title>
+</head>
+
 <body>
-  {% extends "navbar.html" %}
+  {% extends "tables.html" %}
   {% block content %}
 
-  <h1> Checkins Table </h1>
+  <h1> Check-ins Table </h1>
+
+  <!-- Trigger/Open The Modal -->
+  <button class="btn-insert" id="btn-open-modal" onclick="openInsertForm()">Insert</button>
+
+  <!-- The Modal for inserting new record-->
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2 id="form-header">Create a new record</h2>
+      </div>
+      <div class="modal-body">
+        <div id="myForm">
+          <form action="{{url_for('update_checkins')}}" class="form-container" id="form1" , method="POST">
+            <label for="bid"><b>Business id</b></label>
+            <input type="text" placeholder="Enter Business id" name="bid" required>
+            <label for="stars"><b>Sunday Check-ins</b></label>
+            <input type="text" placeholder="Enter Number of Check-ins" name="Sunday" required>
+            <label for="stars"><b>Monday Check-ins</b></label>
+            <input type="text" placeholder="Enter Number of Check-ins" name="Monday" required>
+            <label for="stars"><b>Tuesday Check-ins</b></label>
+            <input type="text" placeholder="Enter Number of Check-ins" name="Tuesday" required>
+            <label for="stars"><b>Wednesday Check-ins</b></label>
+            <input type="text" placeholder="Enter Number of Check-ins" name="Wednesday" required>
+            <label for="stars"><b>Thursday Check-ins</b></label>
+            <input type="text" placeholder="Enter Number of Check-ins" name="Thursday" required>
+            <label for="stars"><b>Friday Check-ins</b></label>
+            <input type="text" placeholder="Enter Number of Check-ins" name="Friday" required>
+            <label for="stars"><b>Saturday Check-ins</b></label>
+            <input type="text" placeholder="Enter Number of Check-ins" name="Saturday" required>
+
+            <button type="submit" class="btn-form" style="text-align:center;">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <table id="myTable" class="display" cellspacing="0" width="100%">
     <thead>
       <tr>
@@ -33,18 +61,26 @@
         <th>Thursday</th>
         <th>Friday</th>
         <th>Saturday</th>
+        <th>edit/delete</th>
       </tr>
     </thead>
     <tbody>
       {% for item in data %}
-      <tr>
+      <tr id="checkins{{item[0]}}">
         {% for i in item %}
         <td>{{i}}</td>
         {% endfor %}
+        <td>
+          <button id="btn-edit{{item[0]}}" onclick="openEditForm(this)">Edit</button>
+          <form action="{{url_for('delete_checkins', id=item[0])}}" , method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn-delete"
+              onclick="confirm('This will remove the record from the table, Do you want to continue?');">Delete</button>
+          </form>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+
   {% endblock %}
-</body>
-</html>
